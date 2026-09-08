@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Elden Ring Extreme Bingo</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="rune rune-a"></div>
+  <div class="rune rune-b"></div>
+
+  <div id="app">
+    <header class="topbar">
+      <div>
+        <h1>ELDEN RING · EXTREME BINGO</h1>
+        <div class="subtitle">3 Spieler · 100 exklusive Aufgaben · Live-Sync</div>
+      </div>
+      <div id="timer" class="timer">--:--:--</div>
+    </header>
+
+    <section id="setup" class="panel setup-panel">
+      <h2>Raum öffnen</h2>
+      <div class="setup-grid">
+        <label>
+          Dein Name
+          <input id="playerName" maxlength="18" placeholder="z. B. Raphi" autocomplete="off" />
+        </label>
+        <label>
+          Raumcode
+          <input id="roomCode" maxlength="8" placeholder="leer = zufällig" autocomplete="off" />
+        </label>
+        <label>
+          Dauer
+          <select id="duration">
+            <option value="1">1 Stunde</option>
+            <option value="2">2 Stunden</option>
+            <option value="3">3 Stunden</option>
+            <option value="4">4 Stunden</option>
+            <option value="6">6 Stunden</option>
+            <option value="8">8 Stunden</option>
+            <option value="10">10 Stunden</option>
+            <option value="12" selected>12 Stunden</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="createBtn" disabled>Neuen Raum erstellen</button>
+        <button id="joinBtn" class="secondary" disabled>Raum beitreten</button>
+      </div>
+
+      <div id="status" class="status status-wait">Firebase wird geprüft …</div>
+
+      <details class="help">
+        <summary>Wenn hier ein Firebase-Fehler steht</summary>
+        <p>Prüfe <b>firebase-config.js</b>, aktiviere in Firebase <b>Authentication → Anonymous</b> und veröffentliche die Regeln aus <b>database.rules.json</b> unter <b>Realtime Database → Rules</b>.</p>
+      </details>
+    </section>
+
+    <section id="game" hidden>
+      <div class="score-row">
+        <div id="scores" class="scores"></div>
+        <div class="game-actions">
+          <button id="startBtn" class="danger" hidden>12h-Bingo starten</button>
+          <button id="inviteBtn" class="secondary">Einladungslink kopieren</button>
+          <button id="overlayBtn" class="secondary">Overlay-Link kopieren</button>
+          <button id="compactBtn" class="secondary">Kompaktmodus</button>
+        </div>
+      </div>
+
+      <div id="waitingNotice" class="waiting-notice">
+        Raum ist offen. Sobald alle bereit sind, startet der Host das Bingo.
+      </div>
+
+      <main class="layout">
+        <div id="board" class="board"></div>
+
+        <aside class="side panel">
+          <h2>Legende</h2>
+          <div class="legend"><span class="dot d1"></span> Grün · Hardcore · 1 Punkt</div>
+          <div class="legend"><span class="dot d2"></span> Orange · Brutal · 2 Punkte</div>
+          <div class="legend"><span class="dot d3"></span> Rot · Extrem · 3 Punkte</div>
+          <div class="legend"><span class="owner-demo"></span> Leuchtender Rand = Besitzer</div>
+
+          <hr />
+
+          <h2>Regeln</h2>
+          <ol class="rules">
+            <li>Ein Feld kann nur <b>einmal</b> vergeben werden. Der erste gültige Claim gewinnt.</li>
+            <li>Grün = <b>1</b>, Orange = <b>2</b>, Rot = <b>3</b> Punkte.</li>
+            <li>Eine komplette eigene <b>10er-Reihe, 10er-Spalte oder Hauptdiagonale</b> ist ein Bingo.</li>
+            <li>Jedes Bingo gibt <b>+5 Punkte</b>; mehrere Linien zählen mehrfach.</li>
+            <li>Das Spiel endet bei <b>00:00:00</b> oder sobald alle 100 Felder vergeben sind.</li>
+            <li>Gewonnen hat die Person mit den meisten Gesamtpunkten.</li>
+            <li>Bei Gleichstand: mehr rote Felder, danach mehr Bingos.</li>
+            <li>Ein Feld wird erst angeklickt, nachdem die Aufgabe vollständig erfüllt wurde.</li>
+            <li>Für Challenge-Aufgaben bei Streit: Clip/Stream als Nachweis.</li>
+            <li>Empfohlen: frische Charaktere, keine Item-Drops, keine Cheats/Save-Edits.</li>
+          </ol>
+
+          <hr />
+
+          <div class="room-info">
+            Raum: <b id="roomLabel">–</b><br>
+            Du: <b id="meLabel">–</b><br>
+            Belegt: <b id="claimedLabel">0 / 100</b>
+          </div>
+        </aside>
+      </main>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
