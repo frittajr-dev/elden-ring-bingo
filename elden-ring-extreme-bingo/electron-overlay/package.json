@@ -1,0 +1,8 @@
+{
+  "name":"elden-ring-bingo-overlay",
+  "version":"1.0.0",
+  "private":true,
+  "main":"main.js",
+  "scripts":{"start":"electron ."},
+  "devDependencies":{"electron":"latest"}
+}
